@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>State Management - Input</title>
+</head>
+<body>
+    <h1>Screen 1: Enter info to save</h1>
+
+    <form action="state-handler.php" method="POST">
+        <input type="hidden" name="action" value="save">
+        
+        <label for="user_info">Data to save:</label>
+        <input type="text" id="userInfo" name="userInfo" required>
+        
+        <button type="submit">Save Data</button>
+    </form>
+
+    <br>
+    <a href="state-view.php">Go to Screen 2 (View Data)</a>
+    <br>
+    <a href="../../../index.html">Back to Main Page</a>
+</body>
+</html>

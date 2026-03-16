@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title> Echo Form</title>
+
+    </head>
+    <body>
+        <h1>Echo Form</h1>
+        <form id="echoForm" action="PHP/echo-php.php" method="POST">
+            <div class="Language">
+                <label for="targetLang">Language Endpoint:</label>
+                <select id="targetLang" name="Target-Lang">
+                    <option value="PHP/echo-php.php">PHP</option>
+                    <option value="jsp/echo-jsp.jsp">JSP</option>
+                    <option value="Python/echo-python.py">Python</option>
+                </select>
+            </div>
+            <div class="method">
+                <label for="httpMethod">HTTP Method:</label>
+                <select id="httpMethod" name="HTTP-Method">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                </select>
+            </div>
+            <div class="encoding">
+                <label for="encoding">Encoding Method:</label>
+                <select id="encoding" name="encoding">
+                    <option value="application/x-www-form-urlencoded">x-www-form-urlencoded</option>
+                    <option value="application/json">application/json</option>
+                </select>
+            </div>
+            <message>
+                <label for="dataPayload">Message:</label>
+                <input type="text" id="dataPayload" name="message" required>
+            </message>
+            <button type="submit">Submit</button>
+            <br>
+            <a href="../index.html">Back to Main Page</a>
+        </form>
+        <div id="responseArea" style="display: none;">
+            <h3>
+                Server Response:
+            </h3>
+            <pre id="responseTxt"></pre>
+        </div>
+        <script>
+            document.getElementById('echoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const endpoint = document.getElementById('targetLang').value;
+            const method = document.getElementById('httpMethod').value;
+            const encoding = document.getElementById('encoding').value;
+            const message = document.getElementById('dataPayload').value;
+            const responseArea = document.getElementById('responseArea');
+            const responseText = document.getElementById('responseTxt');
+
+            let bodyContent;
+            let headers = { 'Content-Type': encoding };
+
+            if (encoding === 'application/json') {
+                bodyContent = JSON.stringify({ message: message, timestamp: new Date() });
+            } else {
+                bodyContent = new URLSearchParams();
+                bodyContent.append('message', message);
+            }
+
+            //no bpody for GET reqs.
+            const fetchOptions = {
+                method: method,
+                headers: headers
+            };
+
+            if (method !== 'GET') {
+                fetchOptions.body = bodyContent;
+            }
+
+            fetch(endpoint, fetchOptions)
+                .then(response => response.text())
+                .then(data => {
+                    responseArea.style.display = 'block';
+                    responseText.textContent = data;
+                })
+                .catch(error => {
+                    alert('Error: ' + error);
+                });
+            });
+        </script>
+    </body>
+</html>

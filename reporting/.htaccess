@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^api/metrics(/(.*))?$ api.php?request=$2 [L,QSA]
